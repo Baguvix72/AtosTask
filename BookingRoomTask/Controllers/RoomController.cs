@@ -17,14 +17,15 @@ namespace BookingRoomTask.Controllers
         public IEnumerable<Troom> Get()
         {
             RoomModel rooms = new RoomModel();
-            return rooms.GetAllRooms();
+            return rooms.GetAll();
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Troom Get(int id)
         {
-            return "value";
+            RoomModel rooms = new RoomModel();
+            return rooms.GetById(id);
         }
 
         // POST api/<controller>
@@ -32,19 +33,24 @@ namespace BookingRoomTask.Controllers
         public int Post(Troom room)
         {
             RoomModel rooms = new RoomModel();
-            return rooms.AddRoom(room);
+            return rooms.Add(room);
         }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        // PUT api/<controller>
+        [HttpPut]
+        public int Put(Troom room)
         {
+            RoomModel rooms = new RoomModel();
+            return rooms.Update(room);
         }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public int Delete(int id)
         {
+            RoomModel rooms = new RoomModel();
+            rooms.Delete(id);
+            return id;
         }
     }
 }

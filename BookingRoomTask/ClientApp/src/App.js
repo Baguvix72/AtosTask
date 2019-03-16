@@ -18,6 +18,7 @@ export default class App extends Component {
         <Route path='/fetchdata' component={FetchData} />
         <Route path='/list_rooms' component={ListRooms} />
         <Route path='/room_item' component={RoomItem} />
+        <Route path='/room_item/:id' component={RoomItem} />
       </Layout>
     );
   }

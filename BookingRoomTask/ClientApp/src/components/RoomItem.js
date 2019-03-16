@@ -2,6 +2,26 @@
 
 export class RoomItem extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            title: '', loading: true, roomData: {}, isEdit: false };
+
+        var id = this.props.match.params['id'];
+
+        if (id > 0) {
+            fetch('api/Room/' + id)
+                .then(response => response.json())
+                .then(data => {
+                    this.setState({ title: 'Изменить комнату', loading: false, roomData: data, isEdit: true });
+                });
+        }
+        else {
+            this.state = { title: 'Добавить комнату', loading: false, roomData: {}, isEdit: false };
+        }  
+    }
+
     handleSave = (event) => {
         event.preventDefault();
         let data = new FormData(event.target);
@@ -46,32 +66,34 @@ export class RoomItem extends Component {
     }
 
     renderCreateForm = () => {
-
         return (
             <div>
                 <form onSubmit={this.handleSave} method="post">
                 <div className="form-group row" >
+                    <input type="hidden" name="id" value={this.state.roomData.id} />
+                </div>  
+                <div className="form-group row" >
                     <label className=" control-label col-md-12">Название комнаты</label>
                     <div className="col-md-4">
-                        <input className="form-control" type="text" name="name" required />
+                        <input className="form-control" type="text" name="name" value={this.state.roomData.name} required />
                     </div>
                 </div >
                 <div className="form-group row" >
                     <label className=" control-label col-md-12">Количество мест</label>
                     <div className="col-md-4">
-                        <input className="form-control" type="text" name="numSeat" required />
+                            <input className="form-control" type="text" name="numSeat" value={this.state.roomData.numSeat} required />
                     </div>
                 </div >
                 <div className="form-group row" >
                     <label className=" control-label col-md-12">Есть проектор</label>
-                    <div className="col-md-4">
-                        <input className="form-control" type="checkbox" name="haveProjector" />
+                        <div className="col-md-4">
+                            <input className="form-control" type="checkbox" name="haveProjector" defaultChecked={this.state.roomData.haveProjector} />
                     </div>
                 </div >
                 <div className="form-group row" >
                     <label className=" control-label col-md-12">Есть маркерная доска</label>
-                    <div className="col-md-4">
-                        <input className="form-control" type="checkbox" name="haveBoard" />
+                        <div className="col-md-4">
+                            <input className="form-control" type="checkbox" name="haveBoard" defaultChecked={this.state.roomData.haveBoard} />
                     </div>
                 </div >
                 <div className="form-group">
@@ -84,11 +106,13 @@ export class RoomItem extends Component {
     }
 
     render() {
-        let contents = this.renderCreateForm();
+        let contents = this.state.loading
+            ? <p><em>Loading...</em></p>
+            : this.renderCreateForm();
 
         return (
             <div>
-                <h1>Добавить комнату</h1>
+                <h1>{this.state.title}</h1>
                 <p>Введите описание комнаты.</p>
                 {contents}
             </div>

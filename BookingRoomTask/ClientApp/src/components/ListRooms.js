@@ -36,6 +36,10 @@ export class ListRooms extends Component {
                             <td>{roomItem.numSeat}</td>
                             <td>{roomItem.haveProjector ? projectorIcon : ''}</td>
                             <td>{roomItem.haveBoard ? boardIcon : ''}</td>
+                            <td>
+                                <a className="action" onClick={() => this.handleUpdate(roomItem.id)}>Изменить</a>{"\t"}
+                                <a className="action" onClick={() => this.handleDelete(roomItem.id)}>Удалить</a>
+                            </td>
                         </tr>
                     )}
                 </tbody>
@@ -43,8 +47,29 @@ export class ListRooms extends Component {
         );
     }
 
+    handleUpdate = (id) => {
+        this.props.history.push('/room_item/' + id);
+    }
+
+    handleDelete = (id) => {
+        if (!window.confirm('Вы действительно хотите удалить эту комнату?'))
+            return;
+        else {
+            fetch('api/Room/' + id, {
+                method: 'delete'
+            }).then(data => {
+                this.setState(
+                    {
+                        roomsList: this.state.roomsList.filter((rec) => {
+                            return (rec.id != id);
+                        })
+                    });
+            });
+        }  
+    }
+
     handleAdd = () => {
-        this.props.history.push("/room_item");
+        this.props.history.push('/room_item');
     }
 
     render() {
