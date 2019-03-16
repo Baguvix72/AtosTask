@@ -12,5 +12,12 @@ namespace BookingRoomTask.Models
             BookingRoomTaskContext db = new BookingRoomTaskContext();
             return db.Troom.ToList();
         }
+
+        public int AddRoom(Troom room)
+        {
+            BookingRoomTaskContext db = new BookingRoomTaskContext();
+            db.Troom.Add(room);
+            return db.SaveChanges();
+        }
     }
 }

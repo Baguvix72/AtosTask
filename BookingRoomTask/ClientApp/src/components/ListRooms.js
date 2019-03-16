@@ -2,7 +2,6 @@
 import { Glyphicon } from 'react-bootstrap';
 
 export class ListRooms extends Component {
-    displayName = ListRooms.name
 
     constructor() {
         super();
@@ -16,10 +15,9 @@ export class ListRooms extends Component {
             });
     }  
 
-    static renderRoomsTable(roomsList) {
+    renderRoomsTable = (roomsList) => {
         let projectorIcon = <Glyphicon glyph='glyphicon glyphicon-facetime-video' />
         let boardIcon = <Glyphicon glyph='glyphicon glyphicon-pencil' />
-        console.log(roomsList);
 
         return (
             <table className='table'>
@@ -45,15 +43,21 @@ export class ListRooms extends Component {
         );
     }
 
+    handleAdd = () => {
+        this.props.history.push("/room_item");
+    }
+
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : ListRooms.renderRoomsTable(this.state.roomsList);
+            : this.renderRoomsTable(this.state.roomsList);
 
         return (
             <div>
-                <h1>List rooms</h1>
-                <p>This component show all rooms list.</p>
+                <h1>Список комнат</h1>
+                <p>Отображает список всех имеющихся на данный момент переговорных.
+                    <a className="action" onClick={this.handleAdd}> Добавить новую</a>
+                </p>
                 {contents}
             </div>
         );

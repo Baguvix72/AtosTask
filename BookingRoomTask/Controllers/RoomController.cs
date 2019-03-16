@@ -29,8 +29,10 @@ namespace BookingRoomTask.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public int Post(Troom room)
         {
+            RoomModel rooms = new RoomModel();
+            return rooms.AddRoom(room);
         }
 
         // PUT api/<controller>/5
