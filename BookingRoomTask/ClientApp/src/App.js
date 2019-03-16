@@ -17,8 +17,8 @@ export default class App extends Component {
         <Route path='/counter' component={Counter} />
         <Route path='/fetchdata' component={FetchData} />
         <Route path='/list_rooms' component={ListRooms} />
-        <Route path='/room_item' component={RoomItem} />
-        <Route path='/room_item/:id' component={RoomItem} />
+        <Route path='/room_add' component={RoomItem} />
+        <Route path='/room_edit/:id' component={RoomItem} />
       </Layout>
     );
   }

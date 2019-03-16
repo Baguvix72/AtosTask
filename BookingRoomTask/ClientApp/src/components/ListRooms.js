@@ -48,7 +48,7 @@ export class ListRooms extends Component {
     }
 
     handleUpdate = (id) => {
-        this.props.history.push('/room_item/' + id);
+        this.props.history.push('/room_edit/' + id);
     }
 
     handleDelete = (id) => {
@@ -69,7 +69,7 @@ export class ListRooms extends Component {
     }
 
     handleAdd = () => {
-        this.props.history.push('/room_item');
+        this.props.history.push('/room_add');
     }
 
     render() {
