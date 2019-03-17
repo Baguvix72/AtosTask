@@ -16,7 +16,7 @@ namespace BookingRoomTask.Controllers
         [HttpGet]
         public IEnumerable<Troom> Get()
         {
-            RoomModel rooms = new RoomModel();
+            ModelRoom rooms = new ModelRoom();
             return rooms.GetAll();
         }
 
@@ -24,7 +24,7 @@ namespace BookingRoomTask.Controllers
         [HttpGet("{id}")]
         public Troom Get(int id)
         {
-            RoomModel rooms = new RoomModel();
+            ModelRoom rooms = new ModelRoom();
             return rooms.GetById(id);
         }
 
@@ -32,7 +32,7 @@ namespace BookingRoomTask.Controllers
         [HttpPost]
         public int Post(Troom room)
         {
-            RoomModel rooms = new RoomModel();
+            ModelRoom rooms = new ModelRoom();
             return rooms.Add(room);
         }
 
@@ -40,7 +40,7 @@ namespace BookingRoomTask.Controllers
         [HttpPut]
         public int Put(Troom room)
         {
-            RoomModel rooms = new RoomModel();
+            ModelRoom rooms = new ModelRoom();
             return rooms.Update(room);
         }
 
@@ -48,7 +48,7 @@ namespace BookingRoomTask.Controllers
         [HttpDelete("{id}")]
         public int Delete(int id)
         {
-            RoomModel rooms = new RoomModel();
+            ModelRoom rooms = new ModelRoom();
             rooms.Delete(id);
             return id;
         }

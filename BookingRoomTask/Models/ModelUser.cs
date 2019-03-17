@@ -6,42 +6,48 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookingRoomTask.Models
 {
-    public class RoomModel
+    public class ModelUser
     {
-        public IEnumerable<Troom> GetAll()
+        public IEnumerable<Tuser> GetAll()
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
-            return db.Troom.ToList();
+            return db.Tuser.ToList();
         }
 
-        public Troom GetById(int id)
+        public Tuser GetById(int id)
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
-            Troom room = db.Troom.Find(id);
-            return room;
+            Tuser user = db.Tuser.Find(id);
+            return user;
         }
 
-        public int Add(Troom room)
+        public IEnumerable<Trole> GetAllRoles()
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
-            db.Troom.Add(room);
+            return db.Trole.ToList();
+        }
+
+        public int Add(Tuser user)
+        {
+            BookingRoomTaskContext db = new BookingRoomTaskContext();
+            db.Tuser.Add(user);
             return db.SaveChanges();
         }
 
         public int Delete(int id)
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
-            Troom room = db.Troom.Find(id);
-            db.Troom.Remove(room);
+            Tuser user = db.Tuser.Find(id);
+            db.Tuser.Remove(user);
             return db.SaveChanges();
         }
 
-        public int Update(Troom room)
+        public int Update(Tuser user)
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
-            db.Entry(room).State = EntityState.Modified;
+            db.Entry(user).State = EntityState.Modified;
             db.SaveChanges();
-            return room.Id;
+            return user.Id;
         }
     }
 }
