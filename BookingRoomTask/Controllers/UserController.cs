@@ -22,10 +22,10 @@ namespace BookingRoomTask.Controllers
 
         // GET: api/<controller>/role
         [HttpGet("role")]
-        public IEnumerable<Tuser> GetRoles()
+        public IEnumerable<Trole> GetRoles()
         {
             ModelUser users = new ModelUser();
-            return users.GetAll();
+            return users.GetAllRoles();
         }
 
         // GET api/<controller>/5
