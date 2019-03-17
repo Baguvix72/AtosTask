@@ -6,6 +6,8 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { ListRooms } from './components/ListRooms';
 import { RoomItem } from './components/RoomItem';
+import { UsersList } from './components/UsersList';
+import { UserItem } from './components/UserItem';
 
 export default class App extends Component {
   displayName = App.name
@@ -19,6 +21,8 @@ export default class App extends Component {
         <Route path='/list_rooms' component={ListRooms} />
         <Route path='/room_add' component={RoomItem} />
         <Route path='/room_edit/:id' component={RoomItem} />
+        <Route path='/list_users' component={UsersList} />
+        <Route path='/user_add' component={UserItem} />
       </Layout>
     );
   }

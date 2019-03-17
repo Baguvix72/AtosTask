@@ -11,7 +11,25 @@ namespace BookingRoomTask.Models
         public IEnumerable<Tuser> GetAll()
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
-            return db.Tuser.ToList();
+
+            /* По умолчанию не вытаскивает навигационные свойства. 
+             * При использовании жеской загрузки на сервере вытаскивает,
+             * но передавать на фронт отказывается. 
+             */
+            var query =
+                from user in db.Tuser
+                join role in db.Trole on user.IdRole equals role.Id
+                select new Tuser
+                {
+                    Id = user.Id,
+                    Hash = user.Hash,
+                    IdRole = user.IdRole,
+                    IdRoleNavigation = role,
+                    Login = user.Login,
+                    Tevent = user.Tevent,
+                };
+
+            return query.ToList();
         }
 
         public Tuser GetById(int id)
