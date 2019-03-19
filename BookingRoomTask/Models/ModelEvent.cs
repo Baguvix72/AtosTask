@@ -6,36 +6,48 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookingRoomTask.Models
 {
-    public class ModelUser
+    public class ModelEvent
     {
-        public IEnumerable<Tuser> GetAll()
+        public IEnumerable<RoomAndEvent> GetList()
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
 
-            /* По умолчанию не вытаскивает навигационные свойства. 
-             * При использовании include на сервере вытаскивает,
-             * но передавать на фронт отказывается. */
+            DateTime EndToday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
             var query =
-                from user in db.Tuser
-                join role in db.Trole on user.IdRole equals role.Id
-                select new Tuser
+                from el in db.Tevent
+                where el.FinishTime > DateTime.Today && el.StartTime < EndToday
+                select el;
+            List<Tevent> result = query.ToList();
+
+            //Получаем самое раннее забронированное время для комнаты.
+            result = result.GroupBy(x => x.IdRoom)
+                           .Select(x => x.OrderBy(y => y.StartTime))
+                           .Select(x => x.First())
+                           .ToList();
+
+            var roomAndEvent =
+                from room in db.Troom
+                join ev in result on room.Id equals ev.IdRoom into u
+                from ev in u.DefaultIfEmpty()
+                select new RoomAndEvent
                 {
-                    Id = user.Id,
-                    Hash = user.Hash,
-                    IdRole = user.IdRole,
-                    IdRoleNavigation = role,
-                    Login = user.Login,
-                    Tevent = user.Tevent,
+                    Id = room.Id,
+                    Name = room.Name,
+                    HaveBoard = room.HaveBoard,
+                    HaveProjector = room.HaveProjector,
+                    NumSeat = room.NumSeat,
+                    Tevent = ev,
                 };
 
-            return query.ToList();
+            return roomAndEvent.ToList();
         }
 
         public Tuser GetById(int id)
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
 
-            //комментарий в методе GetAll()
+            //При вытаскивании роли при помощи include, во фронт передается null.
+            //Поэтому так странно.
             var query =
                 from user in db.Tuser
                 join role in db.Trole on user.IdRole equals role.Id

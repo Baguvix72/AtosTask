@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Glyphicon } from 'react-bootstrap';
 
-export class ListRooms extends Component {
+export class RoomsList extends Component {
 
     constructor() {
         super();
