@@ -32,7 +32,7 @@ export class RoomItem extends Component {
                 body: data,
             }).then((response) => response.json())
                 .then((responseJson) => {
-                    this.props.history.push("/list_rooms");
+                    this.props.history.push('/');
                 })  
         }
         else {
@@ -41,7 +41,7 @@ export class RoomItem extends Component {
                 body: data,
             }).then((response) => response.json())
                 .then((responseJson) => {
-                    this.props.history.push('/list_rooms');
+                    this.props.history.push('/');
                 })
         }
     }
@@ -72,7 +72,7 @@ export class RoomItem extends Component {
     }
 
     handleCancel = () => {
-        this.props.history.push('/list_rooms');
+        this.props.history.push('/');
     }
 
     renderCreateForm = () => {
@@ -117,7 +117,7 @@ export class RoomItem extends Component {
 
     render() {
         let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
+            ? <p><em>Загрузка...</em></p>
             : this.renderCreateForm();
 
         return (

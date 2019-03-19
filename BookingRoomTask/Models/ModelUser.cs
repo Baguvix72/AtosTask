@@ -35,8 +35,22 @@ namespace BookingRoomTask.Models
         public Tuser GetById(int id)
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
-            Tuser user = db.Tuser.Find(id);
-            return user;
+
+            var query =
+                from user in db.Tuser
+                join role in db.Trole on user.IdRole equals role.Id
+                where user.Id == id
+                select new Tuser
+                {
+                    Id = user.Id,
+                    Hash = user.Hash,
+                    IdRole = user.IdRole,
+                    IdRoleNavigation = role,
+                    Login = user.Login,
+                    Tevent = user.Tevent,
+                };
+
+            return query.First();
         }
 
         public IEnumerable<Trole> GetAllRoles()

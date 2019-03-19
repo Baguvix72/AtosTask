@@ -53,7 +53,7 @@ export class UsersList extends Component {
                 this.setState(
                     {
                         usersList: this.state.usersList.filter((rec) => {
-                            return (rec.id != id);
+                            return (rec.id !== id);
                         })
                     });
             });

@@ -31,49 +31,38 @@ export class UserItem extends Component {
     handleSave = (event) => {
         event.preventDefault();
         let data = new FormData(event.target);
-        data = this.normalizeCheckboxValue(data);
+        data = this.normalizeRoleValue(data);
 
         if (this.state.isEdit) {
-            fetch('api/Room', {
+            fetch('api/User', {
                 method: 'PUT',
                 body: data,
             }).then((response) => response.json())
                 .then((responseJson) => {
-                    this.props.history.push("/list_rooms");
+                    this.props.history.push("/list_users");
                 })  
         }
         else {
-            fetch('api/Room', {
+            fetch('api/User', {
                 method: 'POST',
                 body: data,
             }).then((response) => response.json())
                 .then((responseJson) => {
-                    this.props.history.push('/list_rooms');
+                    this.props.history.push('/list_users');
                 })
         }
     }
 
-    /* Html checkbox передает в javascript значения
-     * null и on, когда галочка стоит и не стоит соответственно.
-     * Эта функция меняет данные с формы на логические значения
-     * */
-    normalizeCheckboxValue = (data) => {
-        if (data.get('haveBoard') == null)
-        {
-            data.set('haveBoard', false);
-        }
-        else
-        {
-            data.set('haveBoard', true);
-        }
-
-        if (data.get('haveProjector') == null)
-        {
-            data.set('haveProjector', false);
-        }
-        else
-        {
-            data.set('haveProjector', true);
+    normalizeRoleValue = (data) => {
+        switch (data.get('idRole')) {
+            case 'Сотрудник':
+                data.set('idRole', 1);
+                break;
+            case 'Менеджер':
+                data.set('idRole', 2);
+                break;
+            default:
+                data.set('idRole', 1);
         }
         return data;
     }
@@ -82,7 +71,9 @@ export class UserItem extends Component {
         this.props.history.push('/list_users');
     }
 
-    renderCreateForm = () => {
+    renderCreateNewForm = () => {
+        let defaultRole = this.state.isEdit ? this.state.userData.idRoleNavigation.name : '';
+
         return (
             <div>
                 <form onSubmit={this.handleSave}>
@@ -92,19 +83,19 @@ export class UserItem extends Component {
                 <div className="form-group row" >
                     <label className=" control-label col-md-12">Логин</label>
                     <div className="col-md-4">
-                        <input className="form-control" type="text" name="name" defaultValue={this.state.userData.login} required />
+                        <input className="form-control" type="text" name="login" defaultValue={this.state.userData.login} required />
                     </div>
                 </div >
                 <div className="form-group row">
                     <label className=" control-label col-md-12">Пароль</label>
                     <div className="col-md-4">
-                            <input className="form-control" type="text" name="numSeat" defaultValue={this.state.userData.hash} required />
+                            <input className="form-control" type="text" name="hash" defaultValue={this.state.userData.hash} required />
                     </div>
                 </div>
                 <div className="form-group row">
                     <label className="control-label col-md-12">Роль</label>
                         <div className="col-md-4">
-                        <select className="form-control" data-val="true" name="City" defaultValue={this.state.userData.idRoleNavigation} required>
+                            <select className="form-control" data-val="true" name="idRole" defaultValue={defaultRole} required>
                             <option value="">-- Выберите роль пользователя --</option>
                             {this.state.roleList.map(role =>
                                 <option key={role.id} value={role.name}>{role.name}</option>
@@ -124,7 +115,7 @@ export class UserItem extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Загрузка...</em></p>
-            : this.renderCreateForm();
+            : this.renderCreateNewForm();
 
         return (
             <div>

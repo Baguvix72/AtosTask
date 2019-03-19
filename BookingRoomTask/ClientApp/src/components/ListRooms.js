@@ -61,7 +61,7 @@ export class ListRooms extends Component {
                 this.setState(
                     {
                         roomsList: this.state.roomsList.filter((rec) => {
-                            return (rec.id != id);
+                            return (rec.id !== id);
                         })
                     });
             });
@@ -74,7 +74,7 @@ export class ListRooms extends Component {
 
     render() {
         let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
+            ? <p><em>Загрузка...</em></p>
             : this.renderRoomsTable(this.state.roomsList);
 
         return (
