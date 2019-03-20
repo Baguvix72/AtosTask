@@ -5,6 +5,7 @@ import { RoomsList } from './components/RoomsList';
 import { RoomItem } from './components/RoomItem';
 import { UsersList } from './components/UsersList';
 import { UserItem } from './components/UserItem';
+import { EventsList } from './components/EventsList';
 
 export default class App extends Component {
   displayName = App.name
@@ -18,6 +19,7 @@ export default class App extends Component {
         <Route path='/list_users' component={UsersList} />
         <Route path='/user_add' component={UserItem} />
         <Route path='/user_edit/:id' component={UserItem} />
+        <Route path='/events_list' component={EventsList} />
       </Layout>
     );
   }

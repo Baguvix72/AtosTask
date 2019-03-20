@@ -16,8 +16,8 @@ export class RoomsList extends Component {
     }  
 
     renderRoomsTable = (roomsList) => {
-        let projectorIcon = <Glyphicon glyph='glyphicon glyphicon-facetime-video' />
-        let boardIcon = <Glyphicon glyph='glyphicon glyphicon-pencil' />
+        let projectorIcon = <Glyphicon glyph='facetime-video' />
+        let boardIcon = <Glyphicon glyph='pencil' />
 
         return (
             <table className='table'>

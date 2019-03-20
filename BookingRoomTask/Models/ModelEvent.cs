@@ -8,6 +8,11 @@ namespace BookingRoomTask.Models
 {
     public class ModelEvent
     {
+        /// <summary>
+        /// Возвращает список со всеми комнатами и самым ранним запланированным событием
+        /// на текущий день. Если события отсутсвтует, тогда в свойстве команты event будет null
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<RoomAndEvent> GetList()
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();

@@ -18,6 +18,11 @@ export class NavMenu extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
+            <LinkContainer to={'/events_list'}>
+              <NavItem>
+                <Glyphicon glyph='star' /> План событий
+              </NavItem>
+            </LinkContainer> 
             <LinkContainer to={'/'} exact>
               <NavItem>
                 <Glyphicon glyph='home' /> Комнаты
