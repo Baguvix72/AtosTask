@@ -17,10 +17,13 @@ namespace BookingRoomTask.Models
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
 
-            DateTime EndToday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            DateTime endToday = new DateTime(DateTime.Now.Year, 
+                                        DateTime.Now.Month, 
+                                        DateTime.Now.Day, 23, 59, 59);
+
             var query =
                 from el in db.Tevent
-                where el.FinishTime > DateTime.Today && el.StartTime < EndToday
+                where el.FinishTime > DateTime.Today && el.StartTime < endToday
                 select el;
             List<Tevent> result = query.ToList();
 
@@ -47,56 +50,37 @@ namespace BookingRoomTask.Models
             return roomAndEvent.ToList();
         }
 
-        public Tuser GetById(int id)
+        /// <summary>
+        /// Возвращает список событий на указанную дату для указанной комнаты.
+        /// </summary>
+        /// <param name="idRoom">id нужной комнаты</param>
+        /// <param name="dateTime">Дата для выбора событий</param>
+        /// <returns></returns>
+        public IEnumerable<Tevent> GetEventsForRoom(FilterEvents filter)
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
 
-            //При вытаскивании роли при помощи include, во фронт передается null.
-            //Поэтому так странно.
+            DateTime startDay = new DateTime(filter.DateEvents.Year, 
+                                            filter.DateEvents.Month, 
+                                            filter.DateEvents.Day, 0, 0, 0);
+
+            DateTime endDay = new DateTime(filter.DateEvents.Year, 
+                                            filter.DateEvents.Month, 
+                                            filter.DateEvents.Day, 23, 59, 59);
             var query =
-                from user in db.Tuser
-                join role in db.Trole on user.IdRole equals role.Id
-                where user.Id == id
-                select new Tuser
-                {
-                    Id = user.Id,
-                    Hash = user.Hash,
-                    IdRole = user.IdRole,
-                    IdRoleNavigation = role,
-                    Login = user.Login,
-                    Tevent = user.Tevent,
-                };
+                from el in db.Tevent
+                where el.FinishTime > startDay && el.StartTime < endDay && el.IdRoom == filter.IdRoom
+                select el;
+            List<Tevent> result = query.ToList();
 
-            return query.First();
+            return result;
         }
 
-        public IEnumerable<Trole> GetAllRoles()
+        public int Add(Tevent tevent)
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
-            return db.Trole.ToList();
-        }
-
-        public int Add(Tuser user)
-        {
-            BookingRoomTaskContext db = new BookingRoomTaskContext();
-            db.Tuser.Add(user);
+            db.Tevent.Add(tevent);
             return db.SaveChanges();
-        }
-
-        public int Delete(int id)
-        {
-            BookingRoomTaskContext db = new BookingRoomTaskContext();
-            Tuser user = db.Tuser.Find(id);
-            db.Tuser.Remove(user);
-            return db.SaveChanges();
-        }
-
-        public int Update(Tuser user)
-        {
-            BookingRoomTaskContext db = new BookingRoomTaskContext();
-            db.Entry(user).State = EntityState.Modified;
-            db.SaveChanges();
-            return user.Id;
         }
     }
 }

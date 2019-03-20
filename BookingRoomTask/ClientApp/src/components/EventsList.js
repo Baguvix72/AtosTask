@@ -63,7 +63,7 @@ export class EventsList extends Component {
     }
 
     handleUpdate = (id) => {
-        this.props.history.push('/user_edit/' + id);
+        this.props.history.push('/event_add/' + id);
     }
 
     render() {
@@ -74,7 +74,7 @@ export class EventsList extends Component {
         return (
             <div>
                 <h1>План событий</h1>
-                <p>Отображает список комнат самым раннем на текущий день событием.</p>
+                <p>Отображает список комнат с самым раннем на текущий день событием.</p>
                 {contents}
             </div>
         );
