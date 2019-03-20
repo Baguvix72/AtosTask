@@ -22,7 +22,7 @@ namespace BookingRoomTask.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public IEnumerable<Tevent> Post(FilterEvents filter)
+        public Troom Post(FilterEvents filter)
         {
             ModelEvent model = new ModelEvent();
             return model.GetEventsForRoom(filter);

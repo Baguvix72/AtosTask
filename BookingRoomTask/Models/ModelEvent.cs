@@ -53,10 +53,9 @@ namespace BookingRoomTask.Models
         /// <summary>
         /// Возвращает список событий на указанную дату для указанной комнаты.
         /// </summary>
-        /// <param name="idRoom">id нужной комнаты</param>
-        /// <param name="dateTime">Дата для выбора событий</param>
+        /// <param name="filter">Объект для фильтрации событий</param>
         /// <returns></returns>
-        public IEnumerable<Tevent> GetEventsForRoom(FilterEvents filter)
+        public Troom GetEventsForRoom(FilterEvents filter)
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
 
@@ -69,11 +68,27 @@ namespace BookingRoomTask.Models
                                             filter.DateEvents.Day, 23, 59, 59);
             var query =
                 from el in db.Tevent
-                where el.FinishTime > startDay && el.StartTime < endDay && el.IdRoom == filter.IdRoom
+                where el.FinishTime > startDay 
+                    && el.StartTime < endDay 
+                    && el.IdRoom == filter.IdRoom
                 select el;
-            List<Tevent> result = query.ToList();
+            List<Tevent> eventsList = query.ToList();
 
-            return result;
+            var queryRoom =
+                from el in db.Troom
+                where el.Id == filter.IdRoom
+                select new Troom
+                {
+                    Id = el.Id,
+                    HaveBoard = el.HaveBoard,
+                    HaveProjector = el.HaveProjector,
+                    Name = el.Name,
+                    NumSeat = el.NumSeat,
+                    Description = el.Description,
+                    Tevent = eventsList,
+                };
+
+            return queryRoom.First();
         }
 
         public int Add(Tevent tevent)

@@ -5,8 +5,7 @@ export class UserItem extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            title: '', loading: true, roleList: [], userData: {}, isEdit: false };
+        this.state = { title: '', loading: true, roleList: [], userData: {}, isEdit: false };
 
         let id = this.props.match.params['id'];
 
