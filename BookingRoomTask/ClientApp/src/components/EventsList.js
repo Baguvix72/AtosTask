@@ -53,7 +53,7 @@ export class EventsList extends Component {
                             <td>{eventItem.numSeat}</td>
                             <td>{this.getTimeEvent(eventItem.tevent)}</td>
                             <td>
-                                <a className="action" onClick={() => this.handleUpdate(eventItem.id)}>Добавить</a>{'\t'}
+                                <a className="action" onClick={() => this.handleUpdate(eventItem.id)}>Добавить</a>
                             </td>
                         </tr>
                     )}
@@ -63,7 +63,7 @@ export class EventsList extends Component {
     }
 
     handleUpdate = (id) => {
-        this.props.history.push('/event_add/' + id);
+        this.props.history.push('/event_item/' + id);
     }
 
     render() {

@@ -27,5 +27,13 @@ namespace BookingRoomTask.Controllers
             ModelEvent model = new ModelEvent();
             return model.GetEventsForRoom(filter);
         }
+
+        // POST api/<controller>/add
+        [HttpPost("add")]
+        public void Post(Tevent eventItem)
+        {
+            ModelEvent model = new ModelEvent();
+            model.Add(eventItem);
+        }
     }
 }

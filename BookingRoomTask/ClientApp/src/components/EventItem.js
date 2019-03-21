@@ -1,6 +1,8 @@
 ﻿import React, { Component } from 'react';
 import { Glyphicon } from 'react-bootstrap';
 import DateTimeRangePicker from '@wojtekmaj/react-datetimerange-picker';
+import DatePicker from 'react-date-picker';
+import './EventsList.css';
 
 export class EventItem extends Component {
 
@@ -26,36 +28,8 @@ export class EventItem extends Component {
               });
     }
 
-    handleSave = (event) => {
-        event.preventDefault();
-        let data = new FormData(event.target);
-        data = this.normalizeRoleValue(data);
-
-        fetch('api/User', {
-            method: 'POST',
-            body: data,
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                this.props.history.push('/list_users');
-            })
-    }
-
-    normalizeRoleValue = (data) => {
-        switch (data.get('idRole')) {
-            case 'Сотрудник':
-                data.set('idRole', 1);
-                break;
-            case 'Менеджер':
-                data.set('idRole', 2);
-                break;
-            default:
-                data.set('idRole', 1);
-        }
-        return data;
-    }
-
-    handleCancel = () => {
-        this.props.history.push('/list_users');
+    handleAdd = (id) => {
+        this.props.history.push('/event_add/' + id);
     }
 
     getTimeEvent = (tEvent) => {
@@ -68,6 +42,22 @@ export class EventItem extends Component {
                 calendarIcon={null} />
         }
         return dateTime;
+    }
+
+    handleChangeDate = (date) => {
+
+        var data = new FormData();
+        data.append('idRoom', this.state.idRoom);
+        data.append('dateEvents', date.toISOString());
+
+        fetch('api/Event', {
+            method: 'POST',
+            body: data,
+        })
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ room: data, loading: false, dateTime: date });
+            });
     }
 
     renderCreateNewForm = () => {
@@ -87,7 +77,14 @@ export class EventItem extends Component {
                     </li>
                     <li className="list-group-item">Описание: {this.state.room.description}</li>
                 </ul>
-                <p>Забронированное время</p>
+                <div>
+                    <p className="iconsInTable">Занятое время на указанную дату: </p>
+                    <DatePicker
+                        onChange={this.handleChangeDate}
+                        value={this.state.dateTime}
+                        clearIcon={null}
+                    />
+                </div>
                 <table className='table'>
                     <thead>
                         <tr>
@@ -106,6 +103,7 @@ export class EventItem extends Component {
                         )}
                     </tbody>
                 </table>
+                <button type="button" className="btn btn-default" onClick={() => this.handleAdd(this.state.room.id)}>Забронровать</button>
             </div>
         );
     }

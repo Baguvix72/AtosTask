@@ -88,7 +88,7 @@ export class UserItem extends Component {
                 <div className="form-group row">
                     <label className=" control-label col-md-12">Пароль</label>
                     <div className="col-md-4">
-                            <input className="form-control" type="text" name="hash" defaultValue={this.state.userData.hash} required />
+                            <input className="form-control" type="password" name="hash" defaultValue={this.state.userData.hash} required />
                     </div>
                 </div>
                 <div className="form-group row">
