@@ -91,6 +91,36 @@ namespace BookingRoomTask.Models
             return queryRoom.First();
         }
 
+        /// <summary>
+        /// Возвращает список актуальных событий которые необходимо проверить менеджеру.
+        /// Актуальное - которое началось сегодня.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Tevent> GetEvents()
+        {
+            //BookingRoomTaskContext db = new BookingRoomTaskContext();
+
+            //var query =
+            //    from el in db.Tevent
+            //    where el.FinishTime > DateTime.Today 
+            //        && el.StartTime < endDay 
+            //        && el.IdRoom == filter.IdRoom
+            //    select el;
+
+            ////Получаем уже проверенные события
+            //var checkedQuery =
+            //    from ev in db.Tevent
+            //    from right in db.T
+            //    where right.Magnet == left.Magnet
+            //    select right.Magnet;
+            //List<string> magnetList = magnetQuery.ToList();
+
+            ////Выбираем только те ссылки, которые отсутвуют в повторяющихся
+            //List<FoundPost> filteredList = newPost.Where(i => !magnetList.Contains(i.Magnet)).ToList();
+
+            //List<Tevent> eventsList = query.ToList();
+        }
+
         public int Add(Tevent tevent)
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
