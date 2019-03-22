@@ -7,6 +7,7 @@ namespace BookingRoomTask.Models
     {
         public Tuser()
         {
+            Tcheck = new HashSet<Tcheck>();
             Tevent = new HashSet<Tevent>();
         }
 
@@ -16,6 +17,7 @@ namespace BookingRoomTask.Models
         public int Id { get; set; }
 
         public Trole IdRoleNavigation { get; set; }
+        public ICollection<Tcheck> Tcheck { get; set; }
         public ICollection<Tevent> Tevent { get; set; }
     }
 }

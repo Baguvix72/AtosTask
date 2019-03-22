@@ -5,6 +5,11 @@ namespace BookingRoomTask.Models
 {
     public partial class Tevent
     {
+        public Tevent()
+        {
+            Tcheck = new HashSet<Tcheck>();
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime StartTime { get; set; }
@@ -15,5 +20,6 @@ namespace BookingRoomTask.Models
 
         public Troom IdRoomNavigation { get; set; }
         public Tuser IdUserNavigation { get; set; }
+        public ICollection<Tcheck> Tcheck { get; set; }
     }
 }

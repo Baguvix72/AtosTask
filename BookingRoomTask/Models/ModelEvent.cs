@@ -96,8 +96,8 @@ namespace BookingRoomTask.Models
         /// Актуальное - которое началось сегодня.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Tevent> GetEvents()
-        {
+        //public IEnumerable<Tevent> GetEvents()
+        //{
             //BookingRoomTaskContext db = new BookingRoomTaskContext();
 
             //var query =
@@ -119,7 +119,7 @@ namespace BookingRoomTask.Models
             //List<FoundPost> filteredList = newPost.Where(i => !magnetList.Contains(i.Magnet)).ToList();
 
             //List<Tevent> eventsList = query.ToList();
-        }
+        //}
 
         public int Add(Tevent tevent)
         {

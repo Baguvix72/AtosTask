@@ -15,6 +15,7 @@ namespace BookingRoomTask.Models
         {
         }
 
+        public virtual DbSet<Tcheck> Tcheck { get; set; }
         public virtual DbSet<Tevent> Tevent { get; set; }
         public virtual DbSet<Trole> Trole { get; set; }
         public virtual DbSet<Troom> Troom { get; set; }
@@ -31,6 +32,24 @@ namespace BookingRoomTask.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Tcheck>(entity =>
+            {
+                entity.ToTable("TCheck");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.IdEventNavigation)
+                    .WithMany(p => p.Tcheck)
+                    .HasForeignKey(d => d.IdEvent)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TEvent_TCheck");
+
+                entity.HasOne(d => d.IdUserNavigation)
+                    .WithMany(p => p.Tcheck)
+                    .HasForeignKey(d => d.IdUser)
+                    .HasConstraintName("FK_TUser_TCheck");
+            });
+
             modelBuilder.Entity<Tevent>(entity =>
             {
                 entity.ToTable("TEvent");
