@@ -36,8 +36,6 @@ namespace BookingRoomTask.Models
             {
                 entity.ToTable("TCheck");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.HasOne(d => d.IdEventNavigation)
                     .WithMany(p => p.Tcheck)
                     .HasForeignKey(d => d.IdEvent)

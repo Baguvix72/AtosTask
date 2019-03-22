@@ -5,10 +5,10 @@ namespace BookingRoomTask.Models
 {
     public partial class Tcheck
     {
-        public int Id { get; set; }
         public int IdEvent { get; set; }
         public int IdUser { get; set; }
         public bool Status { get; set; }
+        public int Id { get; set; }
 
         public Tevent IdEventNavigation { get; set; }
         public Tuser IdUserNavigation { get; set; }
