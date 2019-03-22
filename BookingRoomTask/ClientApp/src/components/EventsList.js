@@ -73,7 +73,7 @@ export class EventsList extends Component {
 
         return (
             <div>
-                <h1>План событий</h1>
+                <h1>Планирование событий</h1>
                 <p>Отображает список комнат с самым раннем на текущий день событием.</p>
                 {contents}
             </div>

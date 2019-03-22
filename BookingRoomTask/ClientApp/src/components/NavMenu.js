@@ -12,7 +12,7 @@ export class NavMenu extends Component {
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to={'/'}>BookingRoomTask</Link>
+            <Link to={'/'}>Booking Room</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
@@ -20,7 +20,12 @@ export class NavMenu extends Component {
           <Nav>
             <LinkContainer to={'/events_list'}>
               <NavItem>
-                <Glyphicon glyph='star' /> План событий
+                <Glyphicon glyph='calendar' /> Регистрация событий
+              </NavItem>
+            </LinkContainer>
+            <LinkContainer to={'/checks_list'}>
+              <NavItem>
+                <Glyphicon glyph='check' /> Подтверждение событий
               </NavItem>
             </LinkContainer> 
             <LinkContainer to={'/'} exact>
@@ -30,7 +35,7 @@ export class NavMenu extends Component {
             </LinkContainer>
             <LinkContainer to={'/list_users'}>
               <NavItem>
-                 <Glyphicon glyph='education' /> Пользователи
+                 <Glyphicon glyph='user' /> Пользователи
               </NavItem>
             </LinkContainer> 
           </Nav>

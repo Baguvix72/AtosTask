@@ -8,6 +8,7 @@ import { UserItem } from './components/UserItem';
 import { EventsList } from './components/EventsList';
 import { EventItem } from './components/EventItem';
 import { EventAdd } from './components/EventAdd';
+import { ChecksList } from './components/ChecksList';
 
 export default class App extends Component {
   displayName = App.name
@@ -24,6 +25,7 @@ export default class App extends Component {
         <Route path='/events_list' component={EventsList} />
         <Route path='/event_item/:id' component={EventItem} />
         <Route path='/event_add/:id' component={EventAdd} />
+        <Route path='/checks_list' component={ChecksList} />
       </Layout>
     );
   }

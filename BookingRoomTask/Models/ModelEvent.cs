@@ -96,30 +96,41 @@ namespace BookingRoomTask.Models
         /// Актуальное - которое началось сегодня.
         /// </summary>
         /// <returns></returns>
-        //public IEnumerable<Tevent> GetEvents()
-        //{
-            //BookingRoomTaskContext db = new BookingRoomTaskContext();
+        public IEnumerable<Tevent> GetNewEvents()
+        {
+            BookingRoomTaskContext db = new BookingRoomTaskContext();
 
-            //var query =
-            //    from el in db.Tevent
-            //    where el.FinishTime > DateTime.Today 
-            //        && el.StartTime < endDay 
-            //        && el.IdRoom == filter.IdRoom
-            //    select el;
+            //Получаем id уже проверенных событий
+            var query =
+                from ev in db.Tevent
+                from ch in db.Tcheck
+                where ev.Id == ch.IdEvent
+                select ev.Id;
 
-            ////Получаем уже проверенные события
-            //var checkedQuery =
-            //    from ev in db.Tevent
-            //    from right in db.T
-            //    where right.Magnet == left.Magnet
-            //    select right.Magnet;
-            //List<string> magnetList = magnetQuery.ToList();
+            List<int> eventList = query.ToList();
 
-            ////Выбираем только те ссылки, которые отсутвуют в повторяющихся
-            //List<FoundPost> filteredList = newPost.Where(i => !magnetList.Contains(i.Magnet)).ToList();
+            //Выбираем только те события, которые отсуsтвуют в проверенных
+            var queryDontCheck =
+                from el in db.Tevent
+                join room in db.Troom on el.IdRoom equals room.Id
+                join user in db.Tuser on el.IdUser equals user.Id
+                where !(eventList.Contains(el.Id)) && el.StartTime > DateTime.Today
+                select new Tevent
+                {
+                    Id = el.Id,
+                    Description = el.Description,
+                    IdUser = el.IdUser,
+                    FinishTime = el.FinishTime,
+                    IdRoom = el.IdRoom,
+                    IdRoomNavigation = room,
+                    IdUserNavigation = user,
+                    Name = el.Name,
+                    StartTime = el.StartTime,
+                };
 
-            //List<Tevent> eventsList = query.ToList();
-        //}
+            List<Tevent> eventsList = queryDontCheck.ToList();
+            return eventsList;
+        }
 
         public int Add(Tevent tevent)
         {

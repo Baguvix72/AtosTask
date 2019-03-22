@@ -20,6 +20,14 @@ namespace BookingRoomTask.Controllers
             return model.GetList();
         }
 
+        // GET: api/<controller>/notcheck
+        [HttpGet("NotCheck")]
+        public IEnumerable<Tevent> GetNotCheck()
+        {
+            ModelEvent model = new ModelEvent();
+            return model.GetNewEvents();
+        }
+
         // POST api/<controller>
         [HttpPost]
         public Troom Post(FilterEvents filter)
