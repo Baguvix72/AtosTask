@@ -10,11 +10,16 @@ export class EventsList extends Component {
 
         this.state = { eventsList: [], loading: true };
 
+        this.updatePage();
+    }
+
+    updatePage = () => {
         fetch('api/Event')
             .then(response => response.json())
             .then(data => {
                 this.setState({ eventsList: data, loading: false });
             });
+        setTimeout(this.updatePage, 10000);
     }
 
     getTimeEvent = (tEvent) => {
