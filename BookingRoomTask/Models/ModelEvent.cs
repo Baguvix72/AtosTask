@@ -9,7 +9,7 @@ namespace BookingRoomTask.Models
     public class ModelEvent
     {
         /// <summary>
-        /// Возвращает список со всеми комнатами и самым ранним запланированным событием
+        /// Возвращает список со всеми комнатами и самым ранним запланированным подтвержденным событием
         /// на текущий день. Если события отсутсвтует, тогда в свойстве команты event будет null
         /// </summary>
         /// <returns></returns>
@@ -23,7 +23,10 @@ namespace BookingRoomTask.Models
 
             var query =
                 from el in db.Tevent
-                where el.FinishTime > DateTime.Today && el.StartTime < endToday
+                join ch in db.Tcheck on el.Id equals ch.IdEvent
+                where el.FinishTime > DateTime.Today 
+                    && el.StartTime < endToday
+                    && ch.Status
                 select el;
             List<Tevent> result = query.ToList();
 
@@ -51,7 +54,7 @@ namespace BookingRoomTask.Models
         }
 
         /// <summary>
-        /// Возвращает список событий на указанную дату для указанной комнаты.
+        /// Возвращает комнату со список одобренных событий на указанную дату.
         /// </summary>
         /// <param name="filter">Объект для фильтрации событий</param>
         /// <returns></returns>
@@ -66,14 +69,19 @@ namespace BookingRoomTask.Models
             DateTime endDay = new DateTime(filter.DateEvents.Year, 
                                             filter.DateEvents.Month, 
                                             filter.DateEvents.Day, 23, 59, 59);
+
+            //выбираем все проверенные события для указанного дня и для комнаты
             var query =
                 from el in db.Tevent
+                join ch in db.Tcheck on el.Id equals ch.IdEvent
                 where el.FinishTime > startDay 
                     && el.StartTime < endDay 
                     && el.IdRoom == filter.IdRoom
+                    && ch.Status
                 select el;
             List<Tevent> eventsList = query.ToList();
 
+            //выбираем указанную комнату и кладем уже готовый список событий
             var queryRoom =
                 from el in db.Troom
                 where el.Id == filter.IdRoom
