@@ -12,16 +12,13 @@ namespace BookingRoomTask.Models
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
 
-            /* По умолчанию не вытаскивает навигационные свойства. 
-             * При использовании include на сервере вытаскивает,
-             * но передавать на фронт отказывается. */
             var query =
                 from user in db.Tuser
                 join role in db.Trole on user.IdRole equals role.Id
                 select new Tuser
                 {
                     Id = user.Id,
-                    Hash = user.Hash,
+                    Hash = user.Login,
                     IdRole = user.IdRole,
                     IdRoleNavigation = role,
                     Login = user.Login,
@@ -35,11 +32,31 @@ namespace BookingRoomTask.Models
         {
             BookingRoomTaskContext db = new BookingRoomTaskContext();
 
-            //комментарий в методе GetAll()
             var query =
                 from user in db.Tuser
                 join role in db.Trole on user.IdRole equals role.Id
                 where user.Id == id
+                select new Tuser
+                {
+                    Id = user.Id,
+                    Hash = user.Login,
+                    IdRole = user.IdRole,
+                    IdRoleNavigation = role,
+                    Login = user.Login,
+                    Tevent = user.Tevent,
+                };
+
+            return query.First();
+        }
+
+        public Tuser GetByLogin(string login)
+        {
+            BookingRoomTaskContext db = new BookingRoomTaskContext();
+
+            var query =
+                from user in db.Tuser
+                join role in db.Trole on user.IdRole equals role.Id
+                where user.Login == login
                 select new Tuser
                 {
                     Id = user.Id,
@@ -50,7 +67,28 @@ namespace BookingRoomTask.Models
                     Tevent = user.Tevent,
                 };
 
-            return query.First();
+            return query.FirstOrDefault();
+        }
+
+        public Tuser GetByHash(string hash)
+        {
+            BookingRoomTaskContext db = new BookingRoomTaskContext();
+
+            var query =
+                from user in db.Tuser
+                join role in db.Trole on user.IdRole equals role.Id
+                where user.Hash == hash
+                select new Tuser
+                {
+                    Id = user.Id,
+                    Hash = user.Hash,
+                    IdRole = user.IdRole,
+                    IdRoleNavigation = role,
+                    Login = user.Login,
+                    Tevent = user.Tevent,
+                };
+
+            return query.FirstOrDefault();
         }
 
         public IEnumerable<Trole> GetAllRoles()

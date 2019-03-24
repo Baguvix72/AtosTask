@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookingRoomTask.Models;
@@ -9,6 +11,14 @@ using BookingRoomTask.Models;
 
 namespace BookingRoomTask.Controllers
 {
+    public class ResultAuth
+    {
+        public string Message { get; set; }
+        public string Hash { get; set; }
+        public int Role { get; set; }
+        public int User { get; set; }
+    }
+
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -41,14 +51,60 @@ namespace BookingRoomTask.Controllers
         public int Post(Tuser user)
         {
             ModelUser users = new ModelUser();
+            user = SetHash(user);
             return users.Add(user);
         }
+
+        // POST api/<controller>/check
+        [HttpPost("check")]
+        public ResultAuth PostCheck(Tuser checkUser)
+        {
+            ModelUser users = new ModelUser();
+            Tuser user = users.GetByLogin(checkUser.Login);
+            ResultAuth result = new ResultAuth();
+
+            if (user == null)
+            {
+                result.Message = "Неверный логин.";
+                return result;
+            }
+
+            checkUser.IdRole = user.IdRole;
+            checkUser = SetHash(checkUser);
+
+            if (user.Hash != checkUser.Hash)
+            {
+                result.Message = "Неверный пароль.";
+                return result;
+            }
+
+            result.Hash = checkUser.Hash;
+            result.Role = checkUser.IdRole;
+            return result;
+        }
+
+        // POST api/<controller>/hash
+        [HttpPost("hash")]
+        public ResultAuth PostHash(string hash)
+        {
+            ModelUser users = new ModelUser();
+            Tuser user = users.GetByHash(hash);
+
+            ResultAuth result = new ResultAuth
+            {
+                User = (user == null) ? 0 : user.Id,
+                Role = (user == null) ? 0 : user.IdRole,
+            };
+            return result;
+        }
+
 
         // PUT api/<controller>
         [HttpPut]
         public int Put(Tuser user)
         {
             ModelUser users = new ModelUser();
+            user = SetHash(user);
             return users.Update(user);
         }
 
@@ -59,6 +115,25 @@ namespace BookingRoomTask.Controllers
             ModelUser users = new ModelUser();
             users.Delete(id);
             return id;
+        }
+
+        private Tuser SetHash(Tuser tuser)
+        {
+            string password = tuser.Hash + tuser.IdRole + tuser.Login;
+
+            byte[] arPassword = Encoding.Unicode.GetBytes(password);
+            SHA256 hashMaker = SHA256.Create();
+            byte[] arHash = hashMaker.ComputeHash(arPassword);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (var item in arHash)
+            {
+                stringBuilder.Append(item.ToString("x2"));
+            }
+            string result = stringBuilder.ToString();
+
+            tuser.Hash = result;
+            return tuser;
         }
     }
 }
